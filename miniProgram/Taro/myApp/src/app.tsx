@@ -6,6 +6,8 @@ import Index from './pages/index'
 
 import configStore from './store'
 
+import navigateThrottle from '@utils/throttle'
+
 import './app.scss'
 
 // 如果需要在 h5 环境中开启 React Devtools
@@ -15,6 +17,8 @@ import './app.scss'
 // }
 
 const store = configStore()
+
+navigateThrottle()
 
 class App extends Component {
 
@@ -28,7 +32,8 @@ class App extends Component {
   config: Config = {
     pages: [
       'pages/index/index',
-      'pages/wrapper-test/index'
+      'pages/wrapper-test/index',
+      'pages/throttle-test/index'
     ],
     window: {
       backgroundTextStyle: 'light',

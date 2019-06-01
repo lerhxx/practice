@@ -1,5 +1,5 @@
 import Taro, { Component, Config } from '@tarojs/taro'
-import { View } from '@tarojs/components'
+import { View, Button } from '@tarojs/components'
 
 import wrapComponent from '@components/wrapper'
 
@@ -11,11 +11,18 @@ export default class Index extends Component<any, any> {
         navigationBarTitleText: '首页'
     }
 
+    handleClick = () => {
+        Taro.navigateTo({
+            url: '/pages/throttle-test/index'
+        })
+    }
+
     render() {
         return (
             <View className='index'>
                 首页
-      </View>
+                <Button onClick={this.handleClick}>跳转</Button>
+            </View>
         )
     }
 }
