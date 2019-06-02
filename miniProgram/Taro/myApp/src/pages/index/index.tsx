@@ -11,9 +11,15 @@ export default class Index extends Component<any, any> {
         navigationBarTitleText: '首页'
     }
 
-    handleClick = () => {
+    handleNavigateToThrottlePage = () => {
         Taro.navigateTo({
             url: '/pages/throttle-test/index'
+        })
+    }
+
+    handleNavigateToWraooerPage = () => {
+        Taro.switchTab({
+            url: '/pages/wrapper-test/index'
         })
     }
 
@@ -21,7 +27,8 @@ export default class Index extends Component<any, any> {
         return (
             <View className='index'>
                 首页
-                <Button onClick={this.handleClick}>跳转</Button>
+                <Button onClick={this.handleNavigateToThrottlePage}>throttle-test</Button>
+                <Button onClick={this.handleNavigateToWraooerPage}>wrapper-test</Button>
             </View>
         )
     }
