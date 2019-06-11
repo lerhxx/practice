@@ -31,9 +31,10 @@ class App extends Component {
    */
   config: Config = {
     pages: [
-      'pages/index/index',
-      'pages/wrapper-test/index',
-      'pages/throttle-test/index'
+        'pages/index/index',
+        'pages/wrapper-test/index',
+        'pages/throttle-test/index',
+        'pages/arrow-func-bug/index',
     ],
     window: {
       backgroundTextStyle: 'light',

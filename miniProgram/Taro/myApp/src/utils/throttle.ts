@@ -28,6 +28,9 @@ const navigateThrottle = () => {
             navigateBack: {
                 value: throttle(Taro.navigateBack)
             },
+            reLaunch: {
+                value: throttle(Taro.reLaunch)
+            }
         })
     } catch(err) {
         console.log(`navigateThrottle fail:`, err)
