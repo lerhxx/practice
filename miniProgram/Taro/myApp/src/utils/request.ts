@@ -31,11 +31,7 @@ async function Request(params) {
 
         const resData = isUpload ? JSON.parse(res.data) : res.data
 
-        const { code, msg } = resData
-        if (code !== 0) {
-            throw new Error(msg)
-        }
-        return resData.data
+        return resData
     } catch(err) {
         throw err
     }

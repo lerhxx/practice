@@ -31,6 +31,7 @@ class App extends Component {
    */
   config: Config = {
     pages: [
+        'pages/water-fall/index',
         'pages/canvas/index',
         'pages/index/index',
         'pages/wrapper-test/index',

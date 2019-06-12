@@ -4,10 +4,13 @@
 	"description": "组件库",
 	"appid": "wxa2ba64e6b6eba3db",
 	"setting": {
-		"urlCheck": true,
+		"urlCheck": false,
 		"es6": false,
 		"postcss": false,
-		"minified": false
+		"minified": false,
+		"newFeature": true,
+		"autoAudits": false,
+		"checkInvalidKey": true
 	},
 	"compileType": "miniprogram",
 	"simulatorType": "wechat",
