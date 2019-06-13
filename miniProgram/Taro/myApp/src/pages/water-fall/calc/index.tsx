@@ -30,17 +30,32 @@ export default class CalcWaterFall extends Component<any,any> {
         this.getList()
     }
 
+    async getData(page) {
+        try {
+            page = page >= 0 ? page : this.state.page
+            const data = getMockData(page + 1)
+            this.setState({
+                page: page + 1
+            })
+            return data
+        } catch(err) {}
+    }
+
     getList = (page?) => {
-        page = page || this.state.page
-        const data = getMockData(page + 1)
-        this.props.updateWaterFall(data)
-        this.setState({
-            page: page + 1
-        })
+        this.getData(page)
+            .then(data => {
+                this.props.updateWaterFall(data)
+            })
+            .catch(() => {})
     }
 
     onPullDownRefresh() {
-        this.getList(0)
+        this.getData(0)
+            .then(data => {
+                this.props.initWaterFall(data)
+                Taro.stopPullDownRefresh()
+            })
+            .catch(() => Taro.stopPullDownRefresh)
     }
 
     onReachBottom() {
