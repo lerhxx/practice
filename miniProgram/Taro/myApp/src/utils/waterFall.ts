@@ -2,7 +2,6 @@ import { INIT_COLUMNS } from '@constants/waterFall'
 
 // 计算图片相对高度
 function calcImageHeight(dimensions, imgWidth=345) {
-    console.log('calcImageHeight')
     if (!dimensions) {
         return 200
     }
