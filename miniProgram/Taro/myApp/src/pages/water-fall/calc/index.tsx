@@ -3,7 +3,6 @@ import { View, Image } from '@tarojs/components'
 
 import wrapComponent from '@components/wrapper'
 import { getMockData } from '../getData'
-import { searchNote } from '@apis/request/search'
 
 import { connect } from '@tarojs/redux'
 import { updateWaterFall, initWaterFall } from '@store/actions/waterFall'
@@ -69,6 +68,7 @@ export default class CalcWaterFall extends Component<any,any> {
                 {
                     items.map(item => <View key={item.id} className='water-fall__item' style={`top: ${item.top}rpx;left: ${item.left}rpx;`}>
                         <Image className='water-fall__item-img' src={item.cover} mode='widthFix' />
+                        <View>{item.name}</View>
                     </View>)
                 }
             </View>

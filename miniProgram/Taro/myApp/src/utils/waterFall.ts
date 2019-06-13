@@ -14,7 +14,7 @@ function calcImageLocationInfo (list=[] as waterFallData[], options={} as CalcWa
     const { imgWidth=345, gap=20, bottomGap=20, columns=[...INIT_COLUMNS] } = options
 
     const newList = list.map((item: waterFallData, i) => {
-        const imgHeight: number = calcImageHeight(item.cover_resolution, imgWidth)
+        const imgHeight: number = item.height || calcImageHeight(item.cover_resolution, imgWidth)
         const newItem = { ...item }
         const totalHieght = imgHeight + bottomGap
         const minHeight = Math.min.apply(null, columns) || 0
