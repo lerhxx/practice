@@ -24,6 +24,7 @@ export default class WaterFall extends Component<any,any> {
     }
 
     getList = () => {
+        console.log('getList')
         const data = getMockData()
         this.setState({
             list: data

@@ -1,0 +1,15 @@
+.water-fall {
+    &__list-wrap {
+        position: relative;
+        margin: 20px;
+    }
+
+    &__item {
+        position: absolute;
+        width: 345px;
+
+        &-img {
+            width: 100%;
+        }
+    }
+}

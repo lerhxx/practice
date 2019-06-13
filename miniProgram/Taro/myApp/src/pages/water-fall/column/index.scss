@@ -1,0 +1,21 @@
+.water-fall {
+    &__scroll-wrap {
+        height: 100vh;
+    }
+
+    &__list {
+        &-wrap {
+            padding: 20px;
+            column-width: 345px;
+            column-count: 2;
+            column-gap: 20rpx;
+            box-sizing: border-box;
+        }
+    }
+
+    &__item {
+        &-img {
+            width: 100%;
+        }
+    }
+}

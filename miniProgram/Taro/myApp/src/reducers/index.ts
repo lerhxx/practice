@@ -1,6 +1,6 @@
 import { combineReducers } from 'redux'
-import counter from './counter'
+import waterFall from './waterFall'
 
 export default combineReducers({
-  counter
+  waterFall
 })
