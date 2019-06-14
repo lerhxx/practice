@@ -3,6 +3,12 @@
 
 ## column
 
+```
+    column-width: 345px;
+    column-count: 2;
+    column-gap: 20rpx;
+```
+
 实现上简单、方便，浏览器会自动计算每列的宽度，平均排满所有列。但是是先排第一列，在排第二列。。。
 
 如果数据没有顺序要求的话，这不是大问题。如果希望从左到右顺序排布，加多一个循环就可以实现，就是代码有点冗余，不好维护。
@@ -19,10 +25,43 @@
 
 ### 图片宽高已知
 - 遍历数组，根据宽度和宽高比算出图片对应高度
+
+```
+  // 计算图片相对高度
+  function calcImageHeight(dimensions, imgWidth=345) {
+    if (!dimensions) {
+        return 200
+    }
+    const sizes = dimensions.split('x')
+    return  imgWidth / sizes[0] * sizes[1]
+  }
+```
+
 - 计算出各个图片的位置
+
+```
+  const newList = list.map((item, i) => {
+    const columns = Array.from({ length: COL_NUM }, () => 0)
+    const gap=20,                  // 图片左右间距
+    const bottomGap = 20           // 图片上下间距
+    const imgHeight = calcImageHeight(item.dimensions)
+    const newItem = { ...item }
+    const totalHieght = imgHeight + bottomGap
+    const minHeight = Math.min.apply(null, columns) || 0
+    let minIndex = 0
+
+    minIndex = columns.indexOf(minHeight)
+    columns[minIndex] += totalHieght
+    newItem.top = minHeight
+    newItem.left = (imgWidth + gap) * minIndex
+    return newItem
+   })
+```
+
 - 保存各列的总高度（添加数据时，只需计算新数据的位置）
 - 渲染
 
 [代码](https://github.com/lerhxx/practice/tree/master/miniProgram/Taro/myApp/src/pages/water-fall/calc)
 
 ### 图片宽高未知
+

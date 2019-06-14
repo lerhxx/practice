@@ -1,9 +1,8 @@
 import Taro, { Component, Config } from '@tarojs/taro'
 import { View, Image } from '@tarojs/components'
-
 import wrapComponent from '@components/wrapper'
-import { getMockData } from '../getData'
 
+import { getMockData } from '../getData'
 import { connect } from '@tarojs/redux'
 import { updateWaterFall, initWaterFall } from '@store/actions/waterFall'
 

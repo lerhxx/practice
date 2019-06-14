@@ -11,7 +11,12 @@ function calcImageHeight(dimensions, imgWidth=345) {
 
 // 计算瀑布流定位
 function calcImageLocationInfo (list=[] as waterFallData[], options={} as CalcWaterFallOptions) {
-    const { imgWidth=345, gap=20, bottomGap=20, columns=[...INIT_COLUMNS] } = options
+    const {
+        imgWidth=345,
+        gap=20,               // 图片左右间距
+        bottomGap=20,         // 图片上下间距
+        columns=[...INIT_COLUMNS]
+    } = options
 
     const newList = list.map((item: waterFallData, i) => {
         const imgHeight: number = item.height || calcImageHeight(item.cover_resolution, imgWidth)
