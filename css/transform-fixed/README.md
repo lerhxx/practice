@@ -68,4 +68,4 @@ Authors should be aware that fixed position elements are always relative to the 
 
 所以 demo 展示的 fixed 元素不相对于 viewport 定位，是因为，该元素不在 viewport 的 BFC 内。
 
-[1]: https://github.com/lerhxx/practice/tree/master/css/transform-fixed/demo.png
+[1]: https://github.com/lerhxx/practice/blob/master/css/transform-fixed/demo.png
