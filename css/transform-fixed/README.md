@@ -58,14 +58,6 @@ The position and size of an element’s box(es) are sometimes computed relative 
 
 元素的位置和尺寸是相对于一个确定的 BFC 计算的。
 
-规范里有句很迷惑的话：
-
-```
-Authors should be aware that fixed position elements are always relative to the initial containing block.
-```
-
-下意识的以为 `initial containing block` 是指 viewport，后来想想，应该是指所在的 BFC 里，最外层的 BFC。
-
-所以 demo 展示的 fixed 元素不相对于 viewport 定位，是因为，该元素不在 viewport 的 BFC 内。
+所以 demo 展示的 fixed 元素位置是根据它所在的 BFC 计算的。
 
 [1]: https://github.com/lerhxx/practice/blob/master/css/transform-fixed/demo.png
