@@ -1,5 +1,5 @@
 
-项目中需要展示瀑布流，第一反应就是希望通过 css 实现，方便且不需要太多的计算。可惜 float、flex 都达不到要求，最后发现 css3 的 column。
+项目中需要展示瀑布流，第一反应就是希望通过 css 实现，方便且不需要太多的计算。可惜 float、flex 容易出现两列高度差相差大的情况，最后发现 css3 的 column。
 
 ## column
 
@@ -23,7 +23,7 @@
 
 先考虑瀑布流中只有图片的情况，这又分为图片尺寸已知和未知。通过绝对定位布局。
 
-### 图片宽高已知
+### 图片宽高比已知
 - 遍历数组，根据宽度和宽高比算出图片对应高度
 
 ```
@@ -63,7 +63,18 @@
 
 [代码](https://github.com/lerhxx/practice/tree/master/miniProgram/Taro/myApp/src/pages/water-fall/calc)
 
-### 图片宽高未知
+### 图片宽高比未知
+
+图片宽高比未知的情况下，只能等图片加载完获取比例，再计算位置了。在小程序里，渲染层和逻辑层是两个不同的线程，缺少浏览器里的 DOM API，不过没关系，官方提供了获取节点信息的 API：[wx.createSelectorQuery](https://developers.weixin.qq.com/miniprogram/dev/api/wxml/wx.createSelectorQuery.html)
+
+```
+.createSelectorQuery()
+    .selectAll('.water-fall__item')
+    .boundingClientRect()
+    .exec(res => {
+        // 更新图片信息
+    })
+```
 
 ##### 尝试1
 
