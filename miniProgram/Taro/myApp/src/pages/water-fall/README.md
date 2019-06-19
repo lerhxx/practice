@@ -41,7 +41,7 @@
 
 ```
   const newList = list.map((item, i) => {
-    const columns = Array.from({ length: COL_NUM }, () => 0)
+    const columns = Array.from({ length: 2 }, () => 0)
     const gap=20,                  // 图片左右间距
     const bottomGap = 20           // 图片上下间距
     const imgHeight = calcImageHeight(item.dimensions)
@@ -65,3 +65,16 @@
 
 ### 图片宽高未知
 
+##### 尝试1
+
+通过触发 onLoad 事件，重新计算瀑布流。但是因为图片是并发下载的，每 onLoad 一次，重新计算列表布局，容易造成数据污染，布局计算失败。
+
+##### 尝试2
+如果等所有图片加载完再计算，那么在这之前，页面布局混乱，网速差的情况体验非常不好。
+
+##### 尝试3
+将 onLoad 事件串联执行，待续。
+
+#### 展开 & 收起
+
+通过变量 `isShow` 控制是否显示全部。需要在更新 isShow 之后，重新计算布局。将数据保存在 state 中，确保布局计算在更新 isShow 之后执行。

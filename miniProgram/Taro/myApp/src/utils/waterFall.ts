@@ -1,5 +1,3 @@
-import { INIT_COLUMNS } from '@constants/waterFall'
-
 // 计算图片相对高度
 function calcImageHeight(dimensions, imgWidth=345) {
     if (!dimensions) {
@@ -15,11 +13,12 @@ function calcImageLocationInfo (list=[] as waterFallData[], options={} as CalcWa
         imgWidth=345,
         gap=20,               // 图片左右间距
         bottomGap=20,         // 图片上下间距
-        columns=[...INIT_COLUMNS]
+        columns=initColumns()
     } = options
 
-    const newList = list.map((item: waterFallData, i) => {
+    const newList = list.map((item: waterFallData) => {
         const imgHeight: number = item.height || calcImageHeight(item.cover_resolution, imgWidth)
+        console.log('imgHeight', imgHeight, item.height, item.id)
         const newItem = { ...item }
         const totalHieght = imgHeight + bottomGap
         const minHeight = Math.min.apply(null, columns) || 0
@@ -40,7 +39,12 @@ function calcImageLocationInfo (list=[] as waterFallData[], options={} as CalcWa
     }
 }
 
+function initColumns(cols=2) {
+    return Array.from({ length: cols }, () => 0)
+}
+
 export {
     calcImageHeight,
-    calcImageLocationInfo
+    calcImageLocationInfo,
+    initColumns
 }

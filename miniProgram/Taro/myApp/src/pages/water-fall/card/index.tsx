@@ -6,11 +6,12 @@ import { getMockData } from '../getData'
 import { searchNote } from '@apis/request/search'
 
 import { connect } from '@tarojs/redux'
-import { updateCardWaterFall } from '@store/actions/waterCardFall'
+import { updateCardItemWaterFall, addCardWaterFall, updateCardWaterFall, asyncUpdateCardItemWaterFall } from '@store/actions/waterCardFall'
+import { initColumns, calcImageHeight } from '@utils/waterFallCard'
 
 import './index.scss'
 
-@connect(state => state.waterCardFall, { updateCardWaterFall })
+@connect(state => state.waterCardFall, { updateCardItemWaterFall, addCardWaterFall, updateCardWaterFall, asyncUpdateCardItemWaterFall })
 @wrapComponent()
 export default class CardWaterFall extends Component<any,any> {
     config: Config = {
@@ -22,7 +23,9 @@ export default class CardWaterFall extends Component<any,any> {
     constructor(props) {
         super(props)
         this.state = {
-            page: 0
+            page: 0,
+            items: [],
+            columns: initColumns()
         }
     }
 
@@ -33,27 +36,19 @@ export default class CardWaterFall extends Component<any,any> {
     async getData(page) {
         try {
             page = page >= 0 ? page : this.state.page
-            // const data = getMockData(page + 1)
-            // this.setState({
-            //     page: page + 1
-            // })
-            // return data
             return searchNote({ page: page + 1 })
-            .then(res => {
-                this.setState({
-                    page: page + 1
-                })
-                return res.data
-            })
-            .catch(() => {})
         } catch(err) {}
     }
 
     getList = (page?) => {
         this.getData(page)
-            .then(data => {
-                console.log('items', this.props.updateCardWaterFall)
-                this.props.updateCardWaterFall(data.items)
+            .then(res => {
+                // this.props.addCardWaterFall(data.items)
+                const { data={} } = res
+                this.setState({
+                    page: data.page,
+                    ...this.calcImageLocationInfo(data.items, { columns: [0, 0] })
+                })
             })
             .catch(() => {})
     }
@@ -73,28 +68,96 @@ export default class CardWaterFall extends Component<any,any> {
         this.getList()
     }
 
-    handleImgLoad = (id, index) => {
-        const { items=[] } = this.props
+    async toggleContent(index) {
+        const { items=[] } = this.state
+        const newItem = { ...items[index], isShow: !items[index].isShow }
+        this.calcSingleColumnImageInfo(newItem, true)
+        
+    }
+
+    calcSingleColumnImageInfo = (target, reRender) => {
+        const { items=[], columns=[] } = this.state
+        const colIndex = target.column
+        let column = 0
+        let index = 0
+        const newItems = items.map((item, i) => {
+            if (item.column !== colIndex) {
+                return item
+            }
+            const isTarget = item.id === target.id
+            isTarget && ( index = i )
+            const newItem = {
+                ...item,
+                top: column,
+                isShow: isTarget ? target.isShow : item.isShow,
+                isRender: false
+            }
+            column += ( isTarget ? target.height : item.height ) + 20
+            return newItem
+        })
+        const newColumns = [...columns]
+        newColumns[colIndex] = column
+        this.setState({
+            items: newItems,
+            columns: newColumns
+        }, () => {
+            reRender && this.calcSingleImageInfo(target, index)
+        })
+    }
+
+    calcSingleImageInfo(target, index) {
         Taro.createSelectorQuery()
             .selectAll('.water-fall__item')
             .boundingClientRect()
             .exec(res => {
-                console.log('handleImgLoad', res[0][index], index)
                 const info = res[0][index]
-                const newItems = items.map(item => ({ ...item, height: item.id === id ? info.height : item.height }))
-                this.props.updateCardWaterFall(newItems)
+                console.log('calcSingleImageInfo', info)
+                this.calcSingleColumnImageInfo({ ...target, height: info.height}, false)
             })
     }
 
+    calcImageLocationInfo = (list=[] as waterFallData[], options={} as CalcWaterFallOptions) => {
+        const {
+            imgWidth=345,
+            gap=20,               // 图片左右间距
+            bottomGap=20,         // 图片上下间距
+            columns=initColumns(),
+            resHeight=70,
+        } = options
+    
+        const newList = list.map((item: waterFallData) => {
+            const imgHeight: number = calcImageHeight(item.cover_resolution)
+            const newItem = { ...item }
+            const totalHieght = imgHeight + bottomGap + resHeight
+            const minHeight = Math.min.apply(null, columns) || 0
+            let minIndex = 0
+    
+            minIndex = columns.indexOf(minHeight)
+            columns[minIndex] += totalHieght
+            newItem.top = minHeight
+            newItem.left = (imgWidth + gap) * minIndex
+            newItem.height = totalHieght
+            newItem.column = minIndex
+            return newItem
+        })
+
+        return {
+            columns,
+            items: newList
+        }
+    }
+    
     render() {
-        const { items=[] } = this.props
+        const { items=[] } = this.state
         return (
             <View className='water-fall__list-wrap'>
                 {
-                    items.map((item, index) => <View key={item.id} className='water-fall__item' style={`top: ${item.top}rpx;left: ${item.left}rpx;`}>
-                        <Image onLoad={() => this.handleImgLoad(item.id, index)} className='water-fall__item-img' src={item.cover} mode='widthFix' />
-                        <View>{item.title}</View>
-                    </View>)
+                    items.map((item, index) =>  <View key={item.id} className='water-fall__item' style={`top: ${item.top}px;left: ${item.left}rpx;`}>
+                            <Image className='water-fall__item-img' src={item.cover} mode='widthFix' />
+                            <View className='water-fall__content' style={`height: ${item.isShow ? 'auto' : '80rpx'}`}>{item.title}{item.title}{item.title}{item.title}</View>
+                            <View className='water-fall__btn' onClick={() => this.toggleContent(index)}>{item.isShow ? '收起' : '展开' }</View>
+                        </View>
+                    )
                 }
             </View>
         )

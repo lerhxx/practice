@@ -1,14 +1,14 @@
 import {
     INIT_CARD_WATERFALL,
     ADD_CARD_WATERFALL,
-    UPDATE_CARD_WATERFALL
+    UPDATE_CARD_WATERFALL,
+    UPDATE_CARD_ITEM_WATERFALL
 } from '@store/actionType/waterCardFall'
-import { calcImageLocationInfo } from '@utils/waterFall'
-import { INIT_COLUMNS } from '@constants/waterFall'
+import { calcImageLocationInfo, initColumns } from '@utils/waterFallCard'
 
 const INITIAL_STATE = {
     items: [],
-    columns: [...INIT_COLUMNS]
+    columns: initColumns()
 }
 
 export default function waterFall(state=INITIAL_STATE, action) {
@@ -19,9 +19,13 @@ export default function waterFall(state=INITIAL_STATE, action) {
                 items: action.items
             }
         case ADD_CARD_WATERFALL:
+            const newAddItems = [ ...state.items, ...action.items ]
+            const calcAddItems = calcImageLocationInfo(newAddItems, {
+                columns: [0,0]
+            })
             return {
                 ...state,
-                items: [ ...state.items, ...action.items ]
+                ...calcAddItems
             }
         case UPDATE_CARD_WATERFALL:
                 const calcInfo = calcImageLocationInfo([ ...action.items ], {
@@ -30,6 +34,15 @@ export default function waterFall(state=INITIAL_STATE, action) {
             return {
                 ...state,
                 ...calcInfo
+            }
+        case UPDATE_CARD_ITEM_WATERFALL:
+            const newItems = state.items.map(item => (action.item.id === item.id ? action.item : item))
+            const calcItems = calcImageLocationInfo(newItems, {
+                columns: [0,0]
+            })
+            return {
+                ...state,
+                ...calcItems
             }
         default:
             return state

@@ -2,12 +2,11 @@ import {
     INIT_WATERFALL,
     UPDATE_WATERFALL
 } from '@store/actionType/waterFall'
-import { calcImageLocationInfo } from '@utils/waterFall'
-import { INIT_COLUMNS } from '@constants/waterFall'
+import { calcImageLocationInfo, initColumns } from '@utils/waterFall'
 
 const INITIAL_STATE = {
     items: [],
-    columns: [...INIT_COLUMNS]
+    columns: initColumns()
 }
 
 export default function waterFall(state=INITIAL_STATE, action) {

@@ -7,4 +7,5 @@ interface waterFallData {
     top?: number;
     cover_resolution?: string;
     height?: number;
+    column?: number;
 }

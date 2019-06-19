@@ -5,4 +5,5 @@ interface CalcWaterFallOptions {
     baseTop?: number;
     bottomGap?: number;
     columns?: number[];
+    resHeight?: number;
 }
