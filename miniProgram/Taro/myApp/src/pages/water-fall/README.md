@@ -68,7 +68,7 @@
 图片宽高比未知的情况下，只能等图片加载完获取比例，再计算位置了。在小程序里，渲染层和逻辑层是两个不同的线程，缺少浏览器里的 DOM API，不过没关系，官方提供了获取节点信息的 API：[wx.createSelectorQuery](https://developers.weixin.qq.com/miniprogram/dev/api/wxml/wx.createSelectorQuery.html)
 
 ```
-.createSelectorQuery()
+wx.createSelectorQuery()
     .selectAll('.water-fall__item')
     .boundingClientRect()
     .exec(res => {
