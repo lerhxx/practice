@@ -1,5 +1,5 @@
 import Taro, { Component, Config } from '@tarojs/taro'
-import { View, Image } from '@tarojs/components'
+import { ScrollView, View, Image } from '@tarojs/components'
 
 import wrapComponent from '@components/wrapper'
 import { getMockData } from '../getData'
@@ -11,7 +11,7 @@ import { initColumns, calcImageHeight } from '@utils/waterFallCard'
 
 import './index.scss'
 
-const listPageCount = 5
+const listPageCount = 6
 
 @connect(state => state.waterCardFall, { updateCardItemWaterFall, addCardWaterFall, updateCardWaterFall, asyncUpdateCardItemWaterFall })
 @wrapComponent()
@@ -32,7 +32,8 @@ export default class CardWaterFall extends Component<any,any> {
             items: [],
             columns: initColumns(),
             pageSize: 10,
-            pageCount: 1
+            pageCount: 1,
+            scrollTop: 0
         }
     }
 
@@ -51,17 +52,13 @@ export default class CardWaterFall extends Component<any,any> {
         if (page > this.state.pageCount) {
             return
         }
-        this.getData(page)
+        return this.getData(page)
             .then(res => {
                 const { data={} } = res
                 const items = data.items || []
                 this.totalList = [ ...this.totalList, ...items ]
-                this.currentTab = ~~(data.page / listPageCount)
-                const startIndex = this.currentTab * data.pageSize
-                const showList = this.totalList.slice(startIndex, startIndex + listPageCount * data.pageSize)
-                console.log('showList', showList.length)
-                console.log('startIndex', startIndex)
-                console.log('this.currentTab', this.currentTab)
+                const currentTab = ~~(data.page / listPageCount)
+                const showList = this.getTabList(currentTab)
                 this.setState({
                     page: data.page,
                     pageSize: data.pageSize,
@@ -165,20 +162,73 @@ export default class CardWaterFall extends Component<any,any> {
             items: newList
         }
     }
+
+    handleLower = () => {
+        const { pageSize, page, pageCount } = this.state
+        let showList = this.getTabList()
+        if (showList.length < (listPageCount - 1) * pageSize) {
+            this.getList()
+        } else {
+            if (page < pageCount) {
+                this.getList()
+                this.setState({
+                    scrollTop: this.currentTab + 1
+                })
+            } else {
+                showList = this.getTabList(this.currentTab + 1)
+                this.setState({
+                    scrollTop: this.currentTab + 1,
+                    ...this.calcImageLocationInfo(showList, { columns: [0, 0] })
+                })
+            }
+        }
+    }
+
+    handleUpper = () => {
+        const showList = this.getTabList(this.currentTab - 1)
+        this.setState({
+            ...this.calcImageLocationInfo(showList, { columns: [0, 0] }),
+        })
+    }
+
+    getTabList = (currentTab?) => {
+        const { pageSize } = this.state
+        const newCurrentTab = currentTab >= 0 ? currentTab : this.currentTab
+        if (this.currentTab != newCurrentTab) {
+            this.currentTab = newCurrentTab
+        }
+        const oneTabCount = (listPageCount - 1) * pageSize
+        const startIndex = newCurrentTab * oneTabCount
+        return this.totalList.slice(startIndex, startIndex + oneTabCount)
+    }
     
     render() {
-        const { items=[] } = this.state
+        const { items=[] ,scrollTop } = this.state
         return (
-            <View className='water-fall__list-wrap'>
-                {
-                    items.map((item, index) =>  <View key={item.id} className='water-fall__item' style={`top: ${item.top}px;left: ${item.left}rpx;`}>
-                            <Image className='water-fall__item-img' src={item.cover} mode='widthFix' />
-                            <View className='water-fall__content' style={`height: ${item.isShow ? 'auto' : '80rpx'}`}>{item.title}{item.title}{item.title}{item.title}</View>
-                            <View className='water-fall__btn' onClick={() => this.toggleContent(index)}>{item.isShow ? '收起' : '展开' }</View>
-                        </View>
-                    )
-                }
-            </View>
+            <ScrollView
+                className='water-fall__scroll-list'
+                scrollY
+                lowerThreshold={20}
+                upperThreshold={0}
+                onScrollToLower={this.handleLower}
+                onScrollToUpper={this.handleUpper}
+                // onTouchMove={this.handleTouchMove}
+                // onTouchStart={this.handleTouchStart}
+                // onTouchEnd={this.handleTouchEnd}
+                scrollTop={scrollTop}
+                scroll-into-view={`gid${items.length - 1}`}
+            >
+                <View className='water-fall__list-wrap'>
+                    {
+                        items.map((item, index) =>  <View key={item.id} id={`gid${index}`} className='water-fall__item' style={`top: ${item.top}px;left: ${item.left}rpx;`}>
+                                <Image className='water-fall__item-img' src={item.cover} mode='widthFix' />
+                                <View className='water-fall__content' style={`height: ${item.isShow ? 'auto' : '80rpx'}`}>{item.title}{item.title}{item.title}{item.title}</View>
+                                <View className='water-fall__btn' onClick={() => this.toggleContent(index)}>{item.isShow ? '收起' : '展开' }</View>
+                            </View>
+                        )
+                    }
+                </View>
+            </ScrollView>
         )
     }
 }

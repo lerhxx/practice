@@ -1,4 +1,8 @@
 .water-fall {
+    &__scroll-list {
+        height: 100vh
+    }
+
     &__list-wrap {
         position: relative;
         margin: 20px;

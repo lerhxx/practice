@@ -1,5 +1,5 @@
 import Request from '@utils/request'
-import { NOTE_LIST } from '../WaterFall'
+import { NOTE_LIST } from '../waterFall'
 
 function searchNote(params) {
     return Request({
