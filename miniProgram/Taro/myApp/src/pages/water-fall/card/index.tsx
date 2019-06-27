@@ -11,9 +11,14 @@ import { initColumns, calcImageHeight } from '@utils/waterFallCard'
 
 import './index.scss'
 
+const listPageCount = 5
+
 @connect(state => state.waterCardFall, { updateCardItemWaterFall, addCardWaterFall, updateCardWaterFall, asyncUpdateCardItemWaterFall })
 @wrapComponent()
 export default class CardWaterFall extends Component<any,any> {
+    private totalList: any[] = []
+    private currentTab = 0;
+
     config: Config = {
         navigationBarTitleText: 'WaterCardFall',
         enablePullDownRefresh: true,
@@ -25,7 +30,9 @@ export default class CardWaterFall extends Component<any,any> {
         this.state = {
             page: 0,
             items: [],
-            columns: initColumns()
+            columns: initColumns(),
+            pageSize: 10,
+            pageCount: 1
         }
     }
 
@@ -35,26 +42,38 @@ export default class CardWaterFall extends Component<any,any> {
 
     async getData(page) {
         try {
-            page = page >= 0 ? page : this.state.page
-            return searchNote({ page: page + 1 })
+            return searchNote({ page })
         } catch(err) {}
     }
 
     getList = (page?) => {
+        page = page > 0 ? page : this.state.page + 1
+        if (page > this.state.pageCount) {
+            return
+        }
         this.getData(page)
             .then(res => {
-                // this.props.addCardWaterFall(data.items)
                 const { data={} } = res
+                const items = data.items || []
+                this.totalList = [ ...this.totalList, ...items ]
+                this.currentTab = ~~(data.page / listPageCount)
+                const startIndex = this.currentTab * data.pageSize
+                const showList = this.totalList.slice(startIndex, startIndex + listPageCount * data.pageSize)
+                console.log('showList', showList.length)
+                console.log('startIndex', startIndex)
+                console.log('this.currentTab', this.currentTab)
                 this.setState({
                     page: data.page,
-                    ...this.calcImageLocationInfo(data.items, { columns: [0, 0] })
+                    pageSize: data.pageSize,
+                    pageCount: data.pageCount,
+                    ...this.calcImageLocationInfo(showList, { columns: [0, 0] }),
                 })
             })
             .catch(() => {})
     }
 
     onPullDownRefresh() {
-        this.getData(0)
+        this.getData(1)
             .then(data => {
                 this.props.initWaterFall(data.items)
                 Taro.stopPullDownRefresh()
