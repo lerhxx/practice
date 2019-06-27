@@ -31,6 +31,7 @@ class App extends Component {
    */
   config: Config = {
     pages: [
+        'pages/water-fall/card2/index',
         'pages/water-fall/card/index',
         'pages/water-fall/calc/index',
         'pages/water-fall/column/index',

@@ -1,0 +1,38 @@
+.water-fall {
+    &__scroll-list {
+        height: 100vh
+    }
+
+    &__list-wrap {
+        position: relative;
+        margin: 20px;
+    }
+
+    &__item {
+        position: absolute;
+        width: 345px;
+        box-shadow: 0px 0px 10px 0 rgba(0, 0, 0, .2);
+
+        &-img {
+            width: 100%;
+        }
+    }
+
+    &__content {
+        height: 80px;
+        font-size: 30px;
+        text-overflow: ellipsis;
+        word-wrap: break-word;
+        white-space: normal !important;
+        overflow: hidden;
+        -webkit-line-clamp: 2;	/*  行数*/
+        -webkit-box-orient: vertical;
+    }
+
+    &__btn {
+        margin: 10px 0;
+        color: #ccc;
+        font-size: 24px;
+        text-align: right;
+    }
+}
