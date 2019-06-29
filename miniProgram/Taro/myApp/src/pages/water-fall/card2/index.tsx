@@ -68,13 +68,10 @@ export default class CardWaterFall extends Component<any,any> {
                 const { data={} } = res
                 const items = data.items || []
                 this.totalList = [ ...this.totalList, ...items ]
-                // const currentTab = ~~(data.page / listPageCount)
-                // const showList = this.getTabList(currentTab)
                 this.setState({
                     page: data.page,
                     pageSize: data.pageSize,
-                    pageCount: data.pageCount,
-                    // ...this.calcImageLocationInfo(showList, { columns: [0, 0] }),
+                    pageCount: data.pageCount
                 })
             })
             .catch(() => {})
@@ -200,7 +197,7 @@ export default class CardWaterFall extends Component<any,any> {
             endPage
         }
     }
-    
+
     render() {
         const { items=[] ,scrollTop } = this.state
         return (
@@ -211,11 +208,7 @@ export default class CardWaterFall extends Component<any,any> {
                 upperThreshold={0}
                 onScrollToLower={this.handleLower}
                 onScrollToUpper={this.handleUpper}
-                // onTouchMove={this.handleTouchMove}
-                // onTouchStart={this.handleTouchStart}
-                // onTouchEnd={this.handleTouchEnd}
                 scrollTop={scrollTop}
-                scroll-into-view={`gid${items.length - 1}`}
             >
                 <View className='water-fall__list-wrap'>
                     {
