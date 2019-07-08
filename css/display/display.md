@@ -16,7 +16,7 @@ display 属性使用关键字取值来指定。
 - box
 - legacy
 
-![](https://github.com/lerhxx/practice/blob/master/mindMaster/css/display/display.jpeg)
+![](https://github.com/lerhxx/practice/blob/master/css/display/display.jpeg)
 
 ### outside
 - block
@@ -24,6 +24,13 @@ display 属性使用关键字取值来指定。
 - run-in：即可以表现为 block 也可以表现为 inline，取决于周围的元素。如果内部包含了 block 子元素，则表现为 block；如果后面的兄弟元素是 block，则 run-in 元素表现为兄弟元素的第一个 inline 子元素。如果后面的兄弟元素是 inline，则表现为 block。（只有 ie 支持😂）
 
 ### inside
+
+- flow: 布局取决于其他属性；是否创建 BFC 取决于其外部容器
+- flow-root：生成块级容器，子元素为 flow 布局。创建 BFC
+- table
+- flex
+- grid
+- ruby
 
 ### listitem
 
