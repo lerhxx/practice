@@ -28,14 +28,28 @@ display 属性使用关键字取值来指定。
 - flow: 布局取决于其他属性；是否创建 BFC 取决于其外部容器
 - flow-root：生成块级容器，子元素为 flow 布局。创建 BFC
 - table
-- flex
-- grid
-- ruby
+- flex：太爱这个属性了
+- grid：太爱这个属性了
+- ruby：一般用于语言发音注释
+
+__如果只指定了 inside 值，省略 outside 值，除了 ruby 的 表现为 inline，其他均默认为 block。__
 
 ### listitem
+
+与 __list-style__ 搭配使用，生成指定 ‘::marker’ 伪元素
+
+- list-item
+- list-item block
+- list-item inline
+- list-item flow
+- list-item flow-root
+- list-item block flow
+- list-item block flow-root
+- flow list-item block
 
 ## internal
 
 ### box
 
 ### legacy
+
