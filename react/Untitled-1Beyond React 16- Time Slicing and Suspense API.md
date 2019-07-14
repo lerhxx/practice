@@ -29,7 +29,37 @@ However, the ReactJS team is not slacking. They are hard at work looking for new
 
 Making it easier for developers to build great user experiences using ReactJS has always been the goal of the ReactJS team. Building for great user experiences involves splitting the attention of developers into two distinct categories:
 
+让开发者通过 ReactJS 构建更好的用户体验始终是 ReactJS 团队的目标。构建更好的用户体验，开发者的注意力应分为两大类：
 
+- Computing Power
+- Network Speed
+
+- 计算能力
+- 网络速度
+
+With these categories spelt out, you start asking the following questions:
+
+分出这些类别后，开始回答以下问题：
+
+- Are the users on a slow network? If so, how's the user experience? Can we (developers) control the loading states?
+
+- 用户是否处于慢网速？如果是，用户体验如何？开发者能够控制 loading 状态吗？
+
+- Are the users on a low-end device (devices with low CPU power)? If so, is using the app still a memorable experience effectively?
+
+- 用户使用的是否为低端设备（CPU 性能差的设备）吗？如果是，使用这个 app 的体验依然高效难忘吗？
+
+- Are the users on a fast network? If so, is the experience seamless? No janky UI.
+
+- 用户是否处于快网速？如果是，体验是连续的吗？拒绝复杂的用户界面。
+
+- Are the users on a high-end device (devices with high CPU power)? If so, is the rendering flawless?
+
+- 用户使用的是否为高端设备（CPU 性能高的设备）？如果是，渲染表现完美吗？
+
+These are valid questions that need answers. Let's explore how Time Slicing and Suspense in ReactJS can help deliver the best user experience for everyone.
+
+这些都是需要解决的问题。让我们探索 ReactJS 的 Time Slicing 和 Suspense 如何提升所有用户的体验。
 
 
 
