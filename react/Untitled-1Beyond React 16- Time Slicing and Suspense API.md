@@ -34,7 +34,7 @@ Making it easier for developers to build great user experiences using ReactJS ha
 - Computing Power
 - Network Speed
 
-- 计算能力
+- 计算计能力
 - 网络速度
 
 With these categories spelt out, you start asking the following questions:
@@ -55,11 +55,25 @@ With these categories spelt out, you start asking the following questions:
 
 - Are the users on a high-end device (devices with high CPU power)? If so, is the rendering flawless?
 
-- 用户使用的是否为高端设备（CPU 性能高的设备）？如果是，渲染表现完美吗？
+- 用户使用的是否为高端设备（CPU 性能好的设备）？如果是，渲染表现完美吗？
 
 These are valid questions that need answers. Let's explore how Time Slicing and Suspense in ReactJS can help deliver the best user experience for everyone.
 
 这些都是需要解决的问题。让我们探索 ReactJS 的 Time Slicing 和 Suspense 如何提升所有用户的体验。
+
+## Time Slicing
+
+In Dan's talk, he said: "We’ve built a generic way to ensure that high-priority updates like user input don’t get blocked by rendering low-priority updates". What does this mean? The ReactJS team named this concept Time Slicing. Let me explain in simpler terms.
+
+Dan 的演讲中提到：“我们将会构建一个通用方式确保用户输入等高优先级更新不会被渲染等低优先级更新阻断。” 这是什么意思？ReactJs 团队将这个方式称为 Time Slicing。让我简单说下。
+
+ReactJS is concerned about a device's CPU power. While rendering, ReactJS ensures that it doesn't block the thread thus causing the app to freeze.
+
+ReactJs 关心设备的 CPU 性能。渲染时，ReactJS 确保不会阻塞线程导致应用程序卡顿。
+
+Time-slicing allows ReactJS, which now runs on React Fiber, to split computations of updates on children components into chunks during idle callbacks and rendering work is spread out over multiple frames. Now, during the process of asynchronous rendering, it ensures that if a user's device is very fast, updates within the app feel synchronous and if a user's device is slow, the app feels responsive. No freezing, No janky UI experience!
+
+Time-slicing 让运行在 React Fiber 的 ReactJS 能够将子组件的更新分配到 chunks 中等待空闲时调用，渲染工作被分散到多个帧。现在，在异步渲染进程中，保证了如果用户的设备运行快，应用程序的更新就像同步一样，如果用户设备运行慢，应用程序就像响应式的。没有卡顿，没有糟糕的用户体验。
 
 
 
