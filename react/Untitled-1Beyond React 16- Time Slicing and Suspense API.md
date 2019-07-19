@@ -65,7 +65,7 @@ These are valid questions that need answers. Let's explore how Time Slicing and 
 
 In Dan's talk, he said: "We’ve built a generic way to ensure that high-priority updates like user input don’t get blocked by rendering low-priority updates". What does this mean? The ReactJS team named this concept Time Slicing. Let me explain in simpler terms.
 
-Dan 的演讲中提到：“我们将会构建一个通用方式确保用户输入等高优先级更新不会被渲染等低优先级更新阻断。” 这是什么意思？ReactJs 团队将这个方式称为 Time Slicing。让我简单说下。
+Dan 的演讲中提到：“我们构建一个通用方式确保用户输入等高优先级更新不会被渲染等低优先级更新阻断。” 这是什么意思？ReactJs 团队将这个方式称为 Time Slicing。让我简单说下。
 
 ReactJS is concerned about a device's CPU power. While rendering, ReactJS ensures that it doesn't block the thread thus causing the app to freeze.
 
@@ -75,5 +75,22 @@ Time-slicing allows ReactJS, which now runs on React Fiber, to split computation
 
 Time-slicing 让运行在 React Fiber 的 ReactJS 能够将子组件的更新分配到 chunks 中等待空闲时调用，渲染工作被分散到多个帧。现在，在异步渲染进程中，保证了如果用户的设备运行快，应用程序的更新就像同步一样，如果用户设备运行慢，应用程序就像响应式的。没有卡顿，没有糟糕的用户体验。
 
+## Suspense
+
+In Dan's talk, he said: "We have built a generic way for components to suspend rendering while they load asynchronous data".
+
+Dan 在演讲中介绍到：“我们为组件构建一个通用方式，当加载异步数据时中断渲染。”
+
+The simple definition of the suspense feature is that ReactJS can pause any state update until the data been fetched is ready to be rendered. In essence, ReactJS suspends the component tree while waiting for the data to be fetched completely. During the suspension, it goes ahead to handle other high-priority updates.
+
+suspense 功能简单来说是，ReactJS 能够中断 state 的更新，直到捕获的数据能够被渲染。实际上，ReactJS 在数据获取完整之前，会挂起组件树。挂起的时候，会继续执行其他高优先级的更新。
+
+[Andrew Clark](https://twitter.com/acdlite), (author of the suspense feature), gave a practical breakdown of how the suspense feature works in the tweets below:
+
+[Andrew Clark](https://twitter.com/acdlite)（suspense 的开发者），给出了以下例子展示 suspense 如何工作：
+
+Dan used an API from Future React called createFetcher (this name is likely to change) in his demo to demonstrate how the suspense feature works. The createFetcher function is a basic cache system that allows React to suspend the data fetching request from within the render method. According to Andrew Clark, it's called the simple-cache-provider.
+
+Dan 在 demo 中使用了__React 未来的功能__，__createFetcher__（名字可能会变化）来证明 suspense 如何工作。createFetcher 基于缓存系统，使 React 能在 render 方法中挂起获取数据的请求。 依照 Andrew Clark 的说法，它被称为简单的缓存提供者。
 
 
