@@ -29,7 +29,68 @@ However, the ReactJS team is not slacking. They are hard at work looking for new
 
 Making it easier for developers to build great user experiences using ReactJS has always been the goal of the ReactJS team. Building for great user experiences involves splitting the attention of developers into two distinct categories:
 
+让开发者通过 ReactJS 构建更好的用户体验始终是 ReactJS 团队的目标。构建更好的用户体验，开发者的注意力应分为两大类：
 
+- Computing Power
+- Network Speed
 
+- 计算计能力
+- 网络速度
+
+With these categories spelt out, you start asking the following questions:
+
+分出这些类别后，开始回答以下问题：
+
+- Are the users on a slow network? If so, how's the user experience? Can we (developers) control the loading states?
+
+- 用户是否处于慢网速？如果是，用户体验如何？开发者能够控制 loading 状态吗？
+
+- Are the users on a low-end device (devices with low CPU power)? If so, is using the app still a memorable experience effectively?
+
+- 用户使用的是否为低端设备（CPU 性能差的设备）吗？如果是，使用这个 app 的体验依然高效难忘吗？
+
+- Are the users on a fast network? If so, is the experience seamless? No janky UI.
+
+- 用户是否处于快网速？如果是，体验是连续的吗？拒绝复杂的用户界面。
+
+- Are the users on a high-end device (devices with high CPU power)? If so, is the rendering flawless?
+
+- 用户使用的是否为高端设备（CPU 性能好的设备）？如果是，渲染表现完美吗？
+
+These are valid questions that need answers. Let's explore how Time Slicing and Suspense in ReactJS can help deliver the best user experience for everyone.
+
+这些都是需要解决的问题。让我们探索 ReactJS 的 Time Slicing 和 Suspense 如何提升所有用户的体验。
+
+## Time Slicing
+
+In Dan's talk, he said: "We’ve built a generic way to ensure that high-priority updates like user input don’t get blocked by rendering low-priority updates". What does this mean? The ReactJS team named this concept Time Slicing. Let me explain in simpler terms.
+
+Dan 的演讲中提到：“我们构建一个通用方式确保用户输入等高优先级更新不会被渲染等低优先级更新阻断。” 这是什么意思？ReactJs 团队将这个方式称为 Time Slicing。让我简单说下。
+
+ReactJS is concerned about a device's CPU power. While rendering, ReactJS ensures that it doesn't block the thread thus causing the app to freeze.
+
+ReactJs 关心设备的 CPU 性能。渲染时，ReactJS 确保不会阻塞线程导致应用程序卡顿。
+
+Time-slicing allows ReactJS, which now runs on React Fiber, to split computations of updates on children components into chunks during idle callbacks and rendering work is spread out over multiple frames. Now, during the process of asynchronous rendering, it ensures that if a user's device is very fast, updates within the app feel synchronous and if a user's device is slow, the app feels responsive. No freezing, No janky UI experience!
+
+Time-slicing 让运行在 React Fiber 的 ReactJS 能够将子组件的更新分配到 chunks 中等待空闲时调用，渲染工作被分散到多个帧。现在，在异步渲染进程中，保证了如果用户的设备运行快，应用程序的更新就像同步一样，如果用户设备运行慢，应用程序就像响应式的。没有卡顿，没有糟糕的用户体验。
+
+## Suspense
+
+In Dan's talk, he said: "We have built a generic way for components to suspend rendering while they load asynchronous data".
+
+Dan 在演讲中介绍到：“我们为组件构建一个通用方式，当加载异步数据时中断渲染。”
+
+The simple definition of the suspense feature is that ReactJS can pause any state update until the data been fetched is ready to be rendered. In essence, ReactJS suspends the component tree while waiting for the data to be fetched completely. During the suspension, it goes ahead to handle other high-priority updates.
+
+suspense 功能简单来说是，ReactJS 能够中断 state 的更新，直到捕获的数据能够被渲染。实际上，ReactJS 在数据获取完整之前，会挂起组件树。挂起的时候，会继续执行其他高优先级的更新。
+
+[Andrew Clark](https://twitter.com/acdlite), (author of the suspense feature), gave a practical breakdown of how the suspense feature works in the tweets below:
+
+[Andrew Clark](https://twitter.com/acdlite)（suspense 的开发者），给出了以下例子展示 suspense 如何工作：
+
+Dan used an API from Future React called createFetcher (this name is likely to change) in his demo to demonstrate how the suspense feature works. The createFetcher function is a basic cache system that allows React to suspend the data fetching request from within the render method. According to Andrew Clark, it's called the simple-cache-provider.
+
+Dan 在 demo 中使用了__React 未来的功能__，__createFetcher__（名字可能会变化）来证明 suspense 如何工作。createFetcher 基于缓存系统，使 React 能在 render 方法中挂起获取数据的请求。 依照 Andrew Clark 的说法，它被称为简单的缓存提供者。
 
 
