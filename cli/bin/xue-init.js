@@ -3,12 +3,15 @@ const program = require('commander')
 const path = require('path')
 const fs = require('fs')
 const glob = require('glob')
+const download = require('../lib/download.js')
+const rimraf = require('rimraf')
 
 program.usage('<project-name>').parse(process.argv)
 
 let projectName = program.args[0]
 
 if (!projectName) {
+    console.log('请输入项目名称')
     program.help()
     return
 }
@@ -35,5 +38,15 @@ if (list.length) {
 go()
 
 function go() {
-    console.log(path.resolve(process.cwd(), path.join('.', rootName)))
+    const target = path.resolve(process.cwd(), path.join('.', rootName))
+    download(target)
+        .then(target => console.log('target', target))
+        .catch(err => {
+            console.log('创建失败', err)
+            rimraf(target, () => {})
+        })
 }
+
+process.on('uncatchException', err => {
+    console.log('uncatchException', err)
+})
