@@ -5,6 +5,10 @@ const fs = require('fs')
 const glob = require('glob')
 const download = require('../lib/download.js')
 const rimraf = require('rimraf')
+const inquirer = require('inquirer')
+const generator = require('../lib/generator')
+const chalk = require('chalk')
+const logSymbols = require('log-symbols')
 
 program.usage('<project-name>').parse(process.argv)
 
@@ -38,12 +42,45 @@ if (list.length) {
 go()
 
 function go() {
-    const target = path.resolve(process.cwd(), path.join('.', rootName))
-    download(target)
-        .then(target => console.log('target', target))
+    const projectRoot = path.resolve(process.cwd(), path.join('.', rootName))
+    download(projectRoot)
+        .then(target => {
+            console.log('target', target)
+            return {
+                name: rootName,
+                root: projectRoot,
+                temp: target
+            }
+        })
+        .then(context => {
+            return inquirer.prompt([{
+                name: 'projectName',
+                message: '项目名称',
+                default: context.name
+            }, {
+                name: 'projectVersion',
+                message: '项目版本号',
+                default: '1.0.0'
+            }, {
+                name: 'projectDescription',
+                message: '项目描述',
+                default: `a project name ${rootName}`
+            }])
+            .then(answers => ({
+                ...context,
+                metadata: answers
+            }))
+        })
+        .then(context => {
+            return generator(context.temp, context.metadata, context.root)
+                .then(() => {
+                    console.log(logSymbols.success, chalk.green('创建成功'))
+                    console.log(chalk.green(`cd ${context.root} \nyarn install \nyarn dev`))
+                })
+        })
         .catch(err => {
             console.log('创建失败', err)
-            rimraf(target, () => {})
+            rimraf(projectRoot, () => {})
         })
 }
 

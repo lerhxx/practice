@@ -1,16 +1,21 @@
 const download = require('download-git-repo')
 const path = require('path')
 const fs = require('fs')
+const ora = require('ora')
 
 module.exports = target => {
     const temp = path.join(target || '.', '.download-temp')
+    const spinner = ora(`正在下载项目模板，源地址：${temp}`)
+    spinner.start()
     return new Promise((resolve, reject) => {
         download('lerhxx/templates-repo#master', temp, { clone: true }, err => {
             if (err) {
+                spinner.fail()
                 reject(err)
             } else {
                 try {
-                    copyDir(target, temp)
+                    // copyDir(target, temp)
+                    spinner.succeed()
                     resolve(temp)
                 } catch(err) {
                     reject(err)
